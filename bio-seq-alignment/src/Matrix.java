@@ -2,19 +2,31 @@ import java.util.ArrayList;
 
 public class Matrix {
 	Cell[][] matrix;
+	Cell[][] x;
+	Cell[][] y;
+
 	int m, n, match, mismatch, gap;
+	int d, e;
 	boolean isGlobalAlignment = false;
+	boolean useSubstitutionMatrix = false;
+
 	int maxI = 0, maxJ = 0, maxValue = 0;
 
-	public Matrix(int m, int n, int mch, int mmch, int gp) {
+	public Matrix(int m, int n, int mch, int mmch, int gp, boolean useSubMat) {
 		matrix = new Cell[m][n];
+		x = new Cell[m][n];
+		y = new Cell[m][n];
+
 		this.m = m;
 		this.n = n;
 		this.match = mch;
 		this.mismatch = mmch;
 		this.gap = gp;
 
+		this.useSubstitutionMatrix = useSubMat;
 		matrix[0][0] = new Cell(0, null);
+		x[0][0] = new Cell(0, null);
+		y[0][0] = new Cell(0, null);
 	}
 
 	public void allignGlobally(ArrayList<String> sequences) {
@@ -54,12 +66,13 @@ public class Matrix {
 
 		String s0 = "", s1 = "";
 
-		//System.out.println("\nBacktrack sequence:");
+		// System.out.println("\nBacktrack sequence:");
 		while (true) {
-			if (matrix[i][j].pointer == null)
+			if (matrix[i][j].pointer == null
+					|| (!isGlobalAlignment && matrix[i][j].value == 0))
 				break;
 
-			//System.out.print("(" + matrix[i][j].value + ")");
+			// System.out.print("(" + matrix[i][j].value + ")");
 			if (matrix[i][j].pointer.equals("\\")) {
 				s0 = seq0[i - 1] + s0;
 				s1 = seq1[j - 1] + s1;
@@ -75,7 +88,6 @@ public class Matrix {
 				j--;
 			}
 		}
-
 		return s0 + ";" + s1;
 	}
 
@@ -92,9 +104,13 @@ public class Matrix {
 	void initLocal() {
 		for (int i = 1; i < this.m; i++) {
 			matrix[i][0] = new Cell(0, null);
+			x[i][0] = new Cell(0, null);
+			y[i][0] = new Cell(0, null);
 		}
 		for (int j = 1; j < this.n; j++) {
 			matrix[0][j] = new Cell(0, null);
+			x[0][j] = new Cell(0, null);
+			y[0][j] = new Cell(0, null);
 		}
 		this.isGlobalAlignment = false;
 	}
@@ -123,11 +139,14 @@ public class Matrix {
 
 		int dScore, lScore, uScore;
 
-		if (s0.equals(s1)) {
-			dScore = cellDiag.value + this.match;
-		} else
-			dScore = cellDiag.value + this.mismatch;
-
+		if (useSubstitutionMatrix)
+			dScore = cellDiag.value + SubstitutionMatrix.getScoreValue(s0, s1);
+		else {
+			if (s0.equals(s1)) {
+				dScore = cellDiag.value + this.match;
+			} else
+				dScore = cellDiag.value + this.mismatch;
+		}
 		lScore = cellLeft.value + this.gap;
 		uScore = cellUp.value + this.gap;
 
