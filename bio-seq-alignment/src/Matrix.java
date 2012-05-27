@@ -79,20 +79,6 @@ public class Matrix {
 		return s0 + ";" + s1;
 	}
 
-	private String getMatrixMax() {
-		int max = 0;
-		String loc = "";
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				if (matrix[i][j].value > max) {
-					max = matrix[i][j].value;
-					loc = i + "-" + j;
-				}
-			}
-		}
-		return loc;
-	}
-
 	void initGlobal() {
 		for (int i = 1; i < this.m; i++) {
 			matrix[i][0] = new Cell(i * this.gap, "^");
