@@ -14,9 +14,13 @@ public class Align {
 		Sequences seqs = new Sequences();
 		seqs.readSequences("sequences2.txt");
 		// seqs.printSequences();
-		Matrix mat = new Matrix(seqs.sequences.get(0).length() + 1,
-				seqs.sequences.get(1).length() + 1, 1, -1, -1, useSubMatrix);
-		mat.allignGlobally(seqs.sequences);
-		mat.allignLocally(seqs.sequences);
+		LinearGap mat = new LinearGap(seqs.sequences.get(0).length() + 1,
+				seqs.sequences.get(1).length() + 1, 1, -1, -1);
+		
+		NeedlemanWunsch nw = new NeedlemanWunsch(mat);
+		nw.allignGlobally(seqs.sequences);
+		
+		SmithWaterman sw = new SmithWaterman(mat);
+		sw.allignLocally(seqs.sequences);
 	}
 }

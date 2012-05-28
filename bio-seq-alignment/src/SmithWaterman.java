@@ -1,21 +1,17 @@
 import java.util.ArrayList;
 
-public class Matrix {
+public class SmithWaterman {
 	Cell[][] matrix;
-	Cell[][] x;
-	Cell[][] y;
-
+	
 	int m, n, match, mismatch, gap;
 	int d, e;
-	boolean isGlobalAlignment = false;
 	boolean useSubstitutionMatrix = false;
 
 	int maxI = 0, maxJ = 0, maxValue = 0;
 
-	public Matrix(int m, int n, int mch, int mmch, int gp, boolean useSubMat) {
+	public SmithWaterman(int m, int n, int mch, int mmch, int gp,
+			boolean useSubMat) {
 		matrix = new Cell[m][n];
-		x = new Cell[m][n];
-		y = new Cell[m][n];
 
 		this.m = m;
 		this.n = n;
@@ -24,16 +20,19 @@ public class Matrix {
 		this.gap = gp;
 
 		this.useSubstitutionMatrix = useSubMat;
-		matrix[0][0] = new Cell(0, null);
-		x[0][0] = new Cell(0, null);
-		y[0][0] = new Cell(0, null);
+		matrix[0][0] = new Cell(0, null);		
 	}
 
-	public void allignGlobally(ArrayList<String> sequences) {
-		initGlobal();
-		populateMatrix(sequences);
-		// printMatrix();
-		printSequences(backtrack(sequences));
+	public SmithWaterman(LinearGap mat) {
+		matrix = mat.matrix;
+		this.m = mat.m;
+		this.n = mat.n;
+		this.match = mat.match;
+		this.mismatch = mat.match;
+		this.gap = mat.gap;
+
+		this.useSubstitutionMatrix = mat.useSubstitutionMatrix;
+		matrix[0][0] = new Cell(0, null);
 	}
 
 	public void allignLocally(ArrayList<String> sequences) {
@@ -45,10 +44,7 @@ public class Matrix {
 
 	private void printSequences(String seqs) {
 		String[] alignedSeqs = seqs.split(";");
-		if (isGlobalAlignment)
-			System.out.println("\n\nGlobally aligned sequences:");
-		else
-			System.out.println("\n\nLocally aligned sequences:");
+		System.out.println("\n\nLocally aligned sequences:");
 		System.out.println("\n" + alignedSeqs[0] + "\n" + alignedSeqs[1]);
 	}
 
@@ -56,20 +52,14 @@ public class Matrix {
 		char[] seq0 = sequences.get(0).toUpperCase().toCharArray();
 		char[] seq1 = sequences.get(1).toUpperCase().toCharArray();
 
-		int i = this.m - 1;
-		int j = this.n - 1;
-
-		if (!isGlobalAlignment) {
-			i = maxI;
-			j = maxJ;
-		}
+		int i = maxI;
+		int j = maxJ;
 
 		String s0 = "", s1 = "";
 
 		// System.out.println("\nBacktrack sequence:");
 		while (true) {
-			if (matrix[i][j].pointer == null
-					|| (!isGlobalAlignment && matrix[i][j].value == 0))
+			if (matrix[i][j].pointer == null || matrix[i][j].value == 0)
 				break;
 
 			// System.out.print("(" + matrix[i][j].value + ")");
@@ -91,28 +81,13 @@ public class Matrix {
 		return s0 + ";" + s1;
 	}
 
-	void initGlobal() {
-		for (int i = 1; i < this.m; i++) {
-			matrix[i][0] = new Cell(i * this.gap, "^");
-		}
-		for (int j = 1; j < this.n; j++) {
-			matrix[0][j] = new Cell(j * this.gap, "<");
-		}
-		this.isGlobalAlignment = true;
-	}
-
 	void initLocal() {
 		for (int i = 1; i < this.m; i++) {
-			matrix[i][0] = new Cell(0, null);
-			x[i][0] = new Cell(0, null);
-			y[i][0] = new Cell(0, null);
+			matrix[i][0] = new Cell(0, null);			
 		}
 		for (int j = 1; j < this.n; j++) {
-			matrix[0][j] = new Cell(0, null);
-			x[0][j] = new Cell(0, null);
-			y[0][j] = new Cell(0, null);
+			matrix[0][j] = new Cell(0, null);			
 		}
-		this.isGlobalAlignment = false;
 	}
 
 	void populateMatrix(ArrayList<String> sequences) {
@@ -150,7 +125,7 @@ public class Matrix {
 		lScore = cellLeft.value + this.gap;
 		uScore = cellUp.value + this.gap;
 
-		if (dScore <= 0 && lScore <= 0 && uScore <= 0 && !isGlobalAlignment)
+		if (dScore <= 0 && lScore <= 0 && uScore <= 0)
 			return new Cell(0, null);
 
 		if (dScore >= uScore) {
@@ -174,15 +149,5 @@ public class Matrix {
 			}
 			System.out.print("\n");
 		}
-	}
-}
-
-class Cell {
-	int value = 0;
-	String pointer = "";
-
-	public Cell(int val, String ptr) {
-		this.value = val;
-		this.pointer = ptr;
 	}
 }
