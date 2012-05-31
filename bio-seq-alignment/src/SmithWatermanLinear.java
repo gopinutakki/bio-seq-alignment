@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 
+/**
+ * Local alignment for linear gaps.
+ * @author gopi
+ *
+ */
 public class SmithWatermanLinear {
 	ScoreMatrix scoreMat;
 
@@ -13,7 +18,7 @@ public class SmithWatermanLinear {
 		//printMatrix();
 		printSequences(backtrack(sequences));
 	}
-
+	
 	private void printSequences(String seqs) {
 		String[] alignedSeqs = seqs.split(";");
 		String mToken = "";

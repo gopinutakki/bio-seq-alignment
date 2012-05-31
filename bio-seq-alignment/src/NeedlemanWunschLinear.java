@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 
+/**
+ * Global alignment with linear gap.
+ * @author gopi
+ *
+ */
 public class NeedlemanWunschLinear {
 	ScoreMatrix scoreMat;
 
@@ -7,6 +12,10 @@ public class NeedlemanWunschLinear {
 		this.scoreMat = mat;
 	}
 
+	/**
+	 * initialize the scoring matrix with linear gaps and populate.
+	 * @param sequences
+	 */
 	public void allignGlobally(ArrayList<String> sequences) {
 		initGlobal();
 		populateMatrix(sequences);

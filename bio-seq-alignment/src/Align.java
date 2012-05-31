@@ -11,18 +11,26 @@ import java.io.IOException;
  * @author Gopi
  */
 public class Align {
+	/*
+	 * Variables to store the configuration values. The variables are initialized to default values.
+	 */
 	static String input = "";
 	static String matName = "PAM250";
 	static double match = 5, mismatch = -3, gap = -4, open = -12, extend = -4;
 	static boolean useSubsMat = false, useAffine = false;
 	static String alignType = "";
 
+	/**
+	 * Begin here...
+	 * @param args
+	 */
 	public static void main(String args[]) {
-
+		// Create a static substitution matrix.
 		new SubstitutionMatrix(matName);
 
 		Sequences seqs = new Sequences();
 
+		// Read the configuration file.
 		try {
 			readConfig();
 		} catch (FileNotFoundException e) {
@@ -32,9 +40,11 @@ public class Align {
 			System.out.println("Cound read the config file: 'run.config'");
 		}
 
+		// Read the sequences from the input file. only the first two are read.
 		seqs.readSequences(input);
 		// seqs.printSequences();
 
+		// Perform the configured alignment
 		if (!useAffine) {
 			ScoreMatrix mat = new ScoreMatrix(
 					seqs.sequences.get(0).length() + 1, seqs.sequences.get(1)
@@ -64,6 +74,11 @@ public class Align {
 		System.out.println("\n\n--End of Run--");
 	}
 
+	/**
+	 * 
+	 * Read the configuration file and set the variable values.
+	 * @throws IOException
+	 */
 	private static void readConfig() throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader("run.config"));
 		String line = "";
@@ -135,6 +150,9 @@ public class Align {
 		}
 	}
 
+	/*
+	 * Method to run all the configurations. Except the substitution matrix is to be set true.
+	 */
 	public static void main2(String args[]) {
 		String matName = "PAM250";
 		double match = 5, mismatch = -3, gap = -4, open = -12, extend = -4;
