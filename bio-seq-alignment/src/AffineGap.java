@@ -1,16 +1,18 @@
-import java.util.ArrayList;
+/*import java.util.ArrayList;
 
 public class AffineGap {
 	Cell[][] matrix;
 	Cell[][] x;
 	Cell[][] y;
 
-	int m, n, match, mismatch, gap;
-	int d, e;
-	boolean isGlobalAlignment = false;
+	int m, n;
+	double match, mismatch, gap;
+	double d, e;
+	
 	boolean useSubstitutionMatrix = false;
 
-	int maxI = 0, maxJ = 0, maxValue = 0;
+	int maxI = 0, maxJ = 0;
+	double maxValue = 0;
 
 	public AffineGap(int m, int n, int mch, int mmch, int gp, boolean useSubMat) {
 		matrix = new Cell[m][n];
@@ -137,7 +139,7 @@ public class AffineGap {
 	private Cell populateCell(Cell cellLeft, Cell cellDiag, Cell cellUp,
 			String s0, String s1) {
 
-		int dScore, lScore, uScore;
+		double dScore, lScore, uScore;
 
 		if (useSubstitutionMatrix)
 			dScore = cellDiag.value + SubstitutionMatrix.getScoreValue(s0, s1);
@@ -176,3 +178,4 @@ public class AffineGap {
 		}
 	}
 }
+*/

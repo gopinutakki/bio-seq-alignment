@@ -1,8 +1,8 @@
 public class Cell {
-	int value = 0;
+	double value = 0;
 	String pointer = "";
 
-	public Cell(int val, String ptr) {
+	public Cell(double val, String ptr) {
 		this.value = val;
 		this.pointer = ptr;
 	}
