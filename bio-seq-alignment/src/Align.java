@@ -6,7 +6,7 @@ import java.io.IOException;
 /**
  * Align.java
  * 
- * The main Root program.
+ * Programing Project 1. The main Root program.
  * 
  * @author Gopi
  */
