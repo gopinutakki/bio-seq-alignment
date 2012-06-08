@@ -1,1 +1,1 @@
-a
+http://code.google.com/p/bio-seq-alignment/source/browse/bio-seq-alignment/outputGlobalLocal.txt
